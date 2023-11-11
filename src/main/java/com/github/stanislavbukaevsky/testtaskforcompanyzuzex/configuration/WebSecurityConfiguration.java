@@ -12,8 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@EnableWebSecurity
+/**
+ * Конфигурационный класс для настройки Spring Security
+ */
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
     private final TokenFilterService tokenFilterService;
@@ -25,15 +28,22 @@ public class WebSecurityConfiguration {
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/webjars/**",
-            "/users/create"
+            "/users/create",
+            "/users/access-token/**"
     };
 
     private static final String[] AUTH_ACCESS = {
-            "/users/update",
-            "/users/delete",
+            "/users/update/**",
+            "/users/update-status/**",
+            "/users/delete/**",
             "/users/find",
-            "/homes/add",
-            "/homes/find"
+            "/homes/add-house",
+            "/homes/update-house/**",
+            "/homes/find-house/**",
+            "/homes/delete-house/**"
+    };
+    private static final String[] OWNER_ACCESS = {
+            "/homes/user-house/**"
     };
 
     /**
@@ -52,7 +62,7 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(FREE_ACCESS).permitAll();
                     auth.requestMatchers(AUTH_ACCESS).authenticated();
-                    auth.requestMatchers("/homes/add/user-house").hasAuthority("OWNER");
+                    auth.requestMatchers(OWNER_ACCESS).hasAuthority("OWNER");
                 })
                 .addFilterAfter(tokenFilterService, UsernamePasswordAuthenticationFilter.class);
 

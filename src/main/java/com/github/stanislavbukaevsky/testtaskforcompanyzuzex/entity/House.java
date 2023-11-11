@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Сущность всех домов
  */
@@ -20,7 +22,6 @@ public class House {
     private Long id;
     @Column(name = "address")
     private String address;
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "house", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private List<User> users;
 }

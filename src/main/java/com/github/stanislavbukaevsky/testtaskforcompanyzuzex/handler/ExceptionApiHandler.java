@@ -1,9 +1,6 @@
 package com.github.stanislavbukaevsky.testtaskforcompanyzuzex.handler;
 
-import com.github.stanislavbukaevsky.testtaskforcompanyzuzex.exception.AddressNotFoundException;
-import com.github.stanislavbukaevsky.testtaskforcompanyzuzex.exception.StatusForbiddenException;
-import com.github.stanislavbukaevsky.testtaskforcompanyzuzex.exception.UserNameAlreadyExistsException;
-import com.github.stanislavbukaevsky.testtaskforcompanyzuzex.exception.UserNotFoundException;
+import com.github.stanislavbukaevsky.testtaskforcompanyzuzex.exception.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +14,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Этот класс для обработки всех исключений приложения на уровне контроллеров
+ */
 @Slf4j
 @RestControllerAdvice
 public class ExceptionApiHandler {
@@ -75,6 +75,12 @@ public class ExceptionApiHandler {
                 .body(new ResponseApiException(HttpStatus.NOT_FOUND.value(), exception.getMessage(), getDateTime()));
     }
 
+    /**
+     * Этот метод обрабатывает все исключения, возникшие с неправильным доступом пользователя
+     *
+     * @param exception исключение
+     * @return Возвращает сформированное сообщение пользователю об ошибке, возникшей в результате неправильного запроса
+     */
     @ExceptionHandler(StatusForbiddenException.class)
     public ResponseEntity<ResponseApiException> statusForbiddenException(StatusForbiddenException exception) {
         log.error(exception.getMessage(), exception);
@@ -83,6 +89,12 @@ public class ExceptionApiHandler {
                 .body(new ResponseApiException(HttpStatus.FORBIDDEN.value(), exception.getMessage(), getDateTime()));
     }
 
+    /**
+     * Этот метод обрабатывает все исключения, возникшие с повтором электронной почты
+     *
+     * @param exception исключение
+     * @return Возвращает сформированное сообщение пользователю об ошибке, возникшей в результате неправильного запроса
+     */
     @ExceptionHandler(UserNameAlreadyExistsException.class)
     public ResponseEntity<ResponseApiException> userNameAlreadyExistsException(UserNameAlreadyExistsException exception) {
         log.error(exception.getMessage(), exception);
@@ -91,12 +103,46 @@ public class ExceptionApiHandler {
                 .body(new ResponseApiException(HttpStatus.FORBIDDEN.value(), exception.getMessage(), getDateTime()));
     }
 
+    /**
+     * Этот метод обрабатывает все исключения, возникшие с неправильным доступом пользователя
+     *
+     * @param exception исключение
+     * @return Возвращает сформированное сообщение пользователю об ошибке, возникшей в результате неправильного запроса
+     */
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ResponseApiException> userNotFoundException(UserNotFoundException exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ResponseApiException(HttpStatus.NOT_FOUND.value(), exception.getMessage(), getDateTime()));
+    }
+
+    /**
+     * Этот метод обрабатывает все исключения, возникшие с неправильным доступом пользователя
+     *
+     * @param exception исключение
+     * @return Возвращает сформированное сообщение пользователю об ошибке, возникшей в результате неправильного запроса
+     */
+    @ExceptionHandler(HouseNotFoundException.class)
+    public ResponseEntity<ResponseApiException> houseNotFoundException(HouseNotFoundException exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ResponseApiException(HttpStatus.NOT_FOUND.value(), exception.getMessage(), getDateTime()));
+    }
+
+    /**
+     * Этот метод обрабатывает все исключения, возникшие с неправильным запросом пользователя
+     *
+     * @param exception исключение
+     * @return Возвращает сформированное сообщение пользователю об ошибке, возникшей в результате неправильного запроса
+     */
+    @ExceptionHandler(UserNameBadRequestException.class)
+    public ResponseEntity<ResponseApiException> userNameBadRequestException(UserNameBadRequestException exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ResponseApiException(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), getDateTime()));
     }
 
     /**

@@ -30,6 +30,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "homes_id")
     private House house;
 }

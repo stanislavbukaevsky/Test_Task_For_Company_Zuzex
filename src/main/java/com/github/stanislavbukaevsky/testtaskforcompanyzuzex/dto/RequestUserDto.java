@@ -7,9 +7,12 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * Класс-DTO для запроса пользователя на действие c жильцами
+ */
 @Data
 @Schema(description = "Объект создания пользователя в приложении")
-public class CreateUserRequestDto {
+public class RequestUserDto {
     @NotEmpty(message = "Поле имени пользователя не должно быть пустым!")
     @Size(min = 6, max = 64, message = "Имя должно содержать от 6 до 64 символов!")
     @Schema(description = "Имя пользователя")
@@ -25,5 +28,4 @@ public class CreateUserRequestDto {
     @NotEmpty(message = "Поле пароля не должно быть пустым!")
     @Schema(description = "Пароль пользователя")
     private String password;
-    private String address;
 }

@@ -4,8 +4,6 @@ import com.github.stanislavbukaevsky.testtaskforcompanyzuzex.entity.House;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 /**
  * Интерфейс-репозиторий для работы с методами всех домов.
  * Наследуется от интерфейса {@link JpaRepository}. Параметры: <br>
@@ -14,5 +12,4 @@ import java.util.Optional;
  */
 @Repository
 public interface HouseRepository extends JpaRepository<House, Long> {
-    Optional<House> findHouseByAddress(String address);
 }
